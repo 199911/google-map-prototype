@@ -53,6 +53,35 @@ const pocessPostRequestAsync = (uuid, params) => {
     });
 }
 
+const pocessGetRequestAsync = (uuid) => {
+  let status = 'in progress';
+  console.log(uuid);
+  return database.selectAsync(uuid)
+    .then((results) => {
+      if (_.isArray(results)) {
+        if (results.length < 1) {
+          return {
+            status: 'failure',
+            error: 'Request not found'
+          };
+        } else if (results.length > 1) {
+          return {
+            status: 'failure',
+            error: 'More than one request is found'
+          };
+        } else {
+          const result = results[0];
+          return _.assign({ status: result.status}, JSON.parse(result.response));
+        }
+      }
+    })
+    .catch((err) => {
+      // Hide the database error message from user
+      throw new Error('Database error');
+    });
+}
+
 module.exports = {
-  pocessPostRequestAsync
+  pocessPostRequestAsync,
+  pocessGetRequestAsync
 };
