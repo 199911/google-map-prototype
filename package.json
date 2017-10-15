@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "deploy": "docker-compose up",
+    "init": "docker exec -ti app node ./cmd/init.js"
   },
   "dependencies": {
     "@google/maps": "0.4.5",
